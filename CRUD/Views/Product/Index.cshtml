@@ -1,0 +1,84 @@
+﻿@model List<Product>
+
+@{
+    ViewData["Title"] = "Product";
+}
+
+<h1>This is our Product</h1>
+
+<a asp-controller="Product" asp-action="Create" asp-area="">Add New Product</a>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Product ID</th>
+            <th>Product Name</th>
+            <th>Weight</th>
+            <th>MRP</th>
+            <th>Rate</th>
+            <th>GST</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.ProductId</td>
+                <td>@item.ProductName</td>
+                <td>@item.Weight</td>
+                <td>@item.MRP</td>
+                <td>@item.Rate</td>
+                <td>@item.GST</td>
+                <td>
+                    <a asp-controller="Product" asp-action="Edit" asp-area="" asp-route-id="@item.ProductId" class="btn btn-primary">Edit</a>
+                    @*<a asp-controller="Product" asp-action="Delete" asp-area="" asp-route-id="@item.ProductId"
+                        onclick="return DeleteConfirm()"
+                        class="btn btn-danger">Delete</a>*@
+
+                    <button onclick="DeleteConfirm(this)" data-id="@item.ProductId" class="btn btn-danger">Delete</button>
+                </td>
+            </tr>
+        }
+
+    </tbody>
+</table>
+
+@section Scripts{
+    <script>
+        //function DeleteConfirm() {
+        //    if (confirm('Are you sure want to delete this record')) {
+        //        return true;
+        //    }
+
+        //    return false;
+        //}
+
+        function DeleteConfirm(e) {
+            var productId = $(e).data("id");
+
+            Swal.fire({
+                title: "Are you sure want to delete?",
+                text: "This can be undone!",
+                icon: "warning",
+                showCancelButton: !0,
+                customClass: {
+                    confirmButton: "btn btn-primary w-xs me-2 mt-2",
+                    cancelButton: "btn btn-danger w-xs mt-2 ms-3"
+                },
+                confirmButtonText: "YES",
+                buttonsStyling: !1,
+                showCloseButton: !0
+            }).then(function (t) {
+                if (t.value) {
+                    window.location = "product/delete/" + productId;
+                }
+            });
+        }
+
+            //document.getElementById("btnDeleteConfirm").addEventListener("click", function (e) {
+
+            //});
+
+    </script>
+} 
